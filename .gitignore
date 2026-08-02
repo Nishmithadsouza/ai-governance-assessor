@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+governance.db
+loadtest_governance.db
+streamlit_log.txt
+.streamlit/secrets.toml

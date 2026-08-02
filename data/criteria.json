@@ -1,0 +1,1848 @@
+[
+  {
+    "id": "DP-01",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "PHI/ePHI"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "High",
+    "rationale": "System processes electronic protected health information (ePHI), triggering full HIPAA Privacy and Security Rule obligations regardless of how the AI model itself is built.",
+    "source_ids": [
+      "HIPAA-PRIVACY-SECURITY"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DP-02",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "Genomic Data"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Genomic data is highly sensitive health information; WHO guidance calls for heightened protection of such data given its irrevocable, identifying nature.",
+    "source_ids": [
+      "HIPAA-PRIVACY-SECURITY",
+      "WHO-AI-HEALTH-2021"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DP-03",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "Biometric Data"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Biometric identification data receives special-category treatment under AI governance frameworks due to its immutability and re-identification risk.",
+    "source_ids": [
+      "EU-AI-ACT",
+      "NIST-AI-RMF"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DP-04",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "PHI/ePHI"
+      ],
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "High",
+    "rationale": "Vendor-processed ePHI requires a Business Associate Agreement and vendor due diligence, not just internal controls.",
+    "source_ids": [
+      "HIPAA-PRIVACY-SECURITY",
+      "MSFT-RAI-HEALTHCARE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DP-05",
+    "dimension": "Data Privacy",
+    "condition": {},
+    "keyword_any": [
+      "fully de-identified",
+      "de-identified dataset",
+      "synthetic data only",
+      "no phi"
+    ],
+    "risk_weight": -15,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Description indicates strong data-minimization practice (de-identification/synthetic data), which reduces privacy exposure per NIST AI RMF data-governance expectations.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "BF-01",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "affects_vulnerable": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Use case is flagged as affecting a vulnerable or protected patient population, directly implicating nondiscrimination obligations.",
+    "source_ids": [
+      "ACA-1557-NONDISCRIM",
+      "OBERMEYER-2019-SCIENCE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "BF-02",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "function": [
+        "Risk Scoring / Population Health Prediction",
+        "Claims / Prior-Authorization Decisioning"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Population risk-scoring and claims/prior-authorization models have a documented history of proxy bias (e.g., using cost as a proxy for medical need).",
+    "source_ids": [
+      "OBERMEYER-2019-SCIENCE",
+      "HHS-OCR-AI-NONDISCRIM-GUIDANCE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "BF-03",
+    "dimension": "Bias/Fairness",
+    "condition": {},
+    "keyword_any": [
+      "cost as a proxy",
+      "cost proxy",
+      "predictive risk score",
+      "risk stratification"
+    ],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Description language matches the failure pattern documented in peer-reviewed research on racial bias in healthcare risk-prediction algorithms.",
+    "source_ids": [
+      "OBERMEYER-2019-SCIENCE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "BF-04",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Generative AI/LLM outputs carry known confabulation and representational-bias risks per NIST's Generative AI Profile.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "BF-05",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "jurisdictions": [
+        "United States - Federal",
+        "United States - Colorado"
+      ],
+      "function": [
+        "Claims / Prior-Authorization Decisioning",
+        "Risk Scoring / Population Health Prediction",
+        "Diagnosis / Clinical Decision Support",
+        "Treatment Recommendation",
+        "Patient Triage"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "A US-deployed AI system driving a consequential healthcare decision falls within the scope of federal Section 1557 and/or Colorado's AI-discrimination duties.",
+    "source_ids": [
+      "ACA-1557-NONDISCRIM",
+      "CO-AI-ACT"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "BF-06",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -10,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous outcome monitoring supports the equity pillar of the CHAI Trustworthy AI Framework and helps catch disparate-impact drift early.",
+    "source_ids": [
+      "CHAI-FRAMEWORK"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "HO-01",
+    "dimension": "Human Oversight",
+    "condition": {
+      "autonomy": [
+        "Fully autonomous - no human review"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 35,
+    "risk_level_if_matched": "Critical",
+    "rationale": "Fully autonomous decisions with no human review contradict WHO's 'protect autonomy' principle and OCR guidance requiring a human able to override AI-driven patient care tools.",
+    "source_ids": [
+      "WHO-AI-HEALTH-2021",
+      "HHS-OCR-AI-NONDISCRIM-GUIDANCE",
+      "EU-AI-ACT"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "HO-02",
+    "dimension": "Human Oversight",
+    "condition": {
+      "autonomy": [
+        "Human-in-the-loop (advisory, human must act)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Low",
+    "rationale": "Advisory human-in-the-loop design still requires clearly defined clinician responsibility for the final action taken.",
+    "source_ids": [
+      "WHO-AI-HEALTH-2021"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "HO-03",
+    "dimension": "Human Oversight",
+    "condition": {
+      "function": [
+        "Diagnosis / Clinical Decision Support",
+        "Treatment Recommendation",
+        "Patient Triage"
+      ],
+      "autonomy": [
+        "Fully autonomous - no human review",
+        "Human-in-the-loop (advisory, human must act)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Clinical judgment functions (diagnosis, treatment, triage) are expected under IMDRF/FDA guidance to keep a qualified professional as the accountable decision-maker.",
+    "source_ids": [
+      "IMDRF-GMLP",
+      "FDA-AI-LIFECYCLE-2025"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "HO-04",
+    "dimension": "Human Oversight",
+    "condition": {
+      "is_samd": [
+        true
+      ],
+      "autonomy": [
+        "Fully autonomous - no human review"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "A regulated medical device operating with no human review needs explicit, pre-specified oversight controls under FDA's PCCP framework.",
+    "source_ids": [
+      "FDA-PCCP-2024"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "EXP-01",
+    "dimension": "Explainability",
+    "condition": {
+      "explainability_method": [
+        "None available"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "High",
+    "rationale": "No explainability method is available, conflicting with WHO's transparency/explainability principle and the NIST AI RMF Measure function.",
+    "source_ids": [
+      "WHO-AI-HEALTH-2021",
+      "NIST-AI-RMF"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "EXP-02",
+    "dimension": "Explainability",
+    "condition": {
+      "model_type": [
+        "Deep Learning (black-box)"
+      ],
+      "explainability_method": [
+        "None available",
+        "Global feature importance only"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "A black-box deep-learning model with only global (not case-level) explanation gives clinicians little insight into any individual prediction.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "EXP-03",
+    "dimension": "Explainability",
+    "condition": {
+      "function": [
+        "Diagnosis / Clinical Decision Support",
+        "Treatment Recommendation"
+      ],
+      "explainability_method": [
+        "None available"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Clinicians need a stated rationale to safely act on a diagnostic or treatment recommendation per IMDRF/FDA lifecycle guidance.",
+    "source_ids": [
+      "IMDRF-GMLP",
+      "FDA-AI-LIFECYCLE-2025"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "EXP-04",
+    "dimension": "Explainability",
+    "condition": {
+      "explainability_method": [
+        "Fully interpretable model (e.g., rules/scorecard)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -15,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "An inherently interpretable model design directly satisfies transparency expectations without relying on post-hoc explanation.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "EXP-05",
+    "dimension": "Explainability",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Generative outputs are harder to trace to a specific evidentiary basis, a risk NIST's Generative AI Profile calls out explicitly.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "SEC-01",
+    "dimension": "Security",
+    "condition": {
+      "data_types": [
+        "PHI/ePHI"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Any system holding ePHI must meet HIPAA Security Rule administrative, physical, and technical safeguard requirements.",
+    "source_ids": [
+      "HIPAA-PRIVACY-SECURITY"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "SEC-02",
+    "dimension": "Security",
+    "condition": {
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Third-party/vendor components introduce supply-chain and shared-responsibility security risk that must be covered by contract and vendor oversight.",
+    "source_ids": [
+      "HIPAA-PRIVACY-SECURITY",
+      "MSFT-RAI-HEALTHCARE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "SEC-03",
+    "dimension": "Security",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Generative AI/LLM components carry documented data-leakage and prompt-injection risks per NIST's Generative AI Profile.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "SEC-04",
+    "dimension": "Security",
+    "condition": {},
+    "keyword_any": [
+      "cloud",
+      "api integration",
+      "internet-facing",
+      "patient portal",
+      "public endpoint"
+    ],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Low",
+    "rationale": "Internet-facing or API-integrated deployment expands the attack surface, which an ISO/IEC 42001 AI management system is expected to account for.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "SEC-05",
+    "dimension": "Security",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -10,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous monitoring supports the ISO/IEC 42001 requirement to detect and respond to AI-system security incidents.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DI-01",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Diagnosis / Clinical Decision Support",
+        "Treatment Recommendation",
+        "Patient Triage"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "Diagnosis, treatment, and triage functions directly affect clinical outcomes and patient safety — the highest tier of decision impact.",
+    "source_ids": [
+      "EU-AI-ACT",
+      "WHO-AI-HEALTH-2021"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DI-02",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Claims / Prior-Authorization Decisioning"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Prior-authorization/claims decisions directly control a patient's access to covered care.",
+    "source_ids": [
+      "ACA-1557-NONDISCRIM",
+      "CO-AI-ACT"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DI-03",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Risk Scoring / Population Health Prediction"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Population risk scores drive downstream resource allocation and outreach decisions that materially affect patient care.",
+    "source_ids": [
+      "OBERMEYER-2019-SCIENCE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DI-04",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Administrative Scheduling / Staffing",
+        "Drug Discovery / Research"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 5,
+    "risk_level_if_matched": "Low",
+    "rationale": "Administrative and early-stage research functions have limited direct effect on an individual patient's care decisions.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "DI-05",
+    "dimension": "Decision Impact",
+    "condition": {
+      "affects_vulnerable": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Decisions affecting a vulnerable population carry greater consequence per WHO's 'promote human well-being and safety' principle.",
+    "source_ids": [
+      "WHO-AI-HEALTH-2021"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-01",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "European Union"
+      ],
+      "function": [
+        "Diagnosis / Clinical Decision Support",
+        "Treatment Recommendation",
+        "Patient Triage",
+        "Risk Scoring / Population Health Prediction",
+        "Medical Imaging Analysis"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 35,
+    "risk_level_if_matched": "Critical",
+    "rationale": "EU-deployed clinical AI of this type falls under EU AI Act Annex III as high-risk; use-based obligations apply from 2 Dec 2027 under the 2026 Digital Omnibus (earlier if also regulated as SaMD).",
+    "source_ids": [
+      "EU-AI-ACT",
+      "EU-AI-ACT-OMNIBUS-2026"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-02",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "European Union"
+      ],
+      "is_samd": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Critical",
+    "rationale": "AI already regulated as a medical device under MDR/IVDR must meet EU AI Act obligations on the earlier Aug 2026/2027 timeline, not the general Dec 2027 deadline.",
+    "source_ids": [
+      "EU-AI-ACT-OMNIBUS-2026"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-03",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "data_types": [
+        "PHI/ePHI"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Processing ePHI creates direct HIPAA regulatory exposure independent of any AI-specific law.",
+    "source_ids": [
+      "HIPAA-PRIVACY-SECURITY"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-04",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "United States - Colorado"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Colorado's AI Act imposes duties of reasonable care, impact assessments, and disclosures on high-risk AI used in healthcare decisions from 30 June 2026.",
+    "source_ids": [
+      "CO-AI-ACT"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-05",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "is_samd": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Software as a Medical Device status brings the system under FDA's AI-enabled device lifecycle and change-control guidance.",
+    "source_ids": [
+      "FDA-AI-LIFECYCLE-2025",
+      "FDA-PCCP-2024"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-06",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "function": [
+        "Claims / Prior-Authorization Decisioning"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Coverage/authorization decisions are explicitly named by OCR as within scope of Section 1557's AI nondiscrimination expectations.",
+    "source_ids": [
+      "ACA-1557-NONDISCRIM"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "RE-07",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "multi_jurisdiction": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Operating across more than one jurisdiction multiplies compliance burden, consistent with documented cross-jurisdictional regulatory divergence in healthcare AI.",
+    "source_ids": [
+      "ARXIV-GLOBAL-AI-GOV-HEALTH"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MR-01",
+    "dimension": "Model Risk",
+    "condition": {
+      "model_type": [
+        "Deep Learning (black-box)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Black-box deep-learning models are harder to validate and audit under an AI management system.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MR-02",
+    "dimension": "Model Risk",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Generative AI/LLM components carry elevated, still-emerging model risk per NIST's dedicated Generative AI Profile.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MR-03",
+    "dimension": "Model Risk",
+    "condition": {
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Third-party models require documented oversight of vendor-supplied model behavior, training data, and update cadence.",
+    "source_ids": [
+      "ISO-42001",
+      "EPIC-MODEL-CARDS"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MR-04",
+    "dimension": "Model Risk",
+    "condition": {
+      "is_samd": [
+        true
+      ],
+      "monitoring": [
+        "No post-deployment monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "A regulated device with no post-deployment monitoring cannot detect the model drift that FDA's change-control framework assumes will be tracked.",
+    "source_ids": [
+      "FDA-PCCP-2024",
+      "IMDRF-GMLP"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MR-05",
+    "dimension": "Model Risk",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -15,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous monitoring is the core control IMDRF's Good Machine Learning Practice relies on to catch performance drift early.",
+    "source_ids": [
+      "IMDRF-GMLP"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MR-06",
+    "dimension": "Model Risk",
+    "condition": {},
+    "keyword_any": [],
+    "risk_weight": 5,
+    "risk_level_if_matched": "Low",
+    "rationale": "Every deployed AI system carries a baseline governance expectation under the OECD AI Principles (accountability, transparency) regardless of its specific risk profile.",
+    "source_ids": [
+      "OECD-AI-PRINCIPLES"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MON-01",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "No post-deployment monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "High",
+    "rationale": "No post-deployment monitoring means performance drift, bias drift, or failure modes would go undetected.",
+    "source_ids": [
+      "IMDRF-GMLP",
+      "FDA-AI-LIFECYCLE-2025"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MON-02",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "Periodic manual audit"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Periodic manual audit is better than none but leaves gaps between review cycles where drift can go unnoticed.",
+    "source_ids": [
+      "IMDRF-GMLP"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MON-03",
+    "dimension": "Monitoring",
+    "condition": {
+      "is_samd": [
+        true
+      ],
+      "monitoring": [
+        "No post-deployment monitoring",
+        "Periodic manual audit"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "High",
+    "rationale": "FDA's predetermined change control framework assumes structured, ongoing performance monitoring for AI-enabled devices.",
+    "source_ids": [
+      "FDA-PCCP-2024"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "MON-04",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -20,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous automated monitoring is the strongest control state under both the CHAI framework and ISO/IEC 42001.",
+    "source_ids": [
+      "CHAI-FRAMEWORK",
+      "ISO-42001"
+    ],
+    "industry": "Healthcare & Life Sciences"
+  },
+  {
+    "id": "HDP-01",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "Biometric Data (facial/voice analysis)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Facial/voice analysis of candidates is biometric processing, which AI governance frameworks treat as a special, higher-sensitivity data category.",
+    "source_ids": [
+      "EU-AI-ACT",
+      "NIST-AI-RMF"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HDP-02",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "Video/Audio Interview Data"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Illinois law specifically regulates the collection, retention, and sharing of AI-analyzed video interview recordings.",
+    "source_ids": [
+      "IL-AI-VIDEO-INTERVIEW-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HDP-03",
+    "dimension": "Data Privacy",
+    "condition": {},
+    "keyword_any": [
+      "de-identified",
+      "synthetic data only",
+      "anonymized"
+    ],
+    "risk_weight": -10,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Data-minimization practice reduces privacy exposure per NIST AI RMF data-governance expectations.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HBF-01",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "function": [
+        "Resume Screening / Candidate Ranking",
+        "Video Interview Analysis",
+        "Skills Assessment / Testing",
+        "Promotion / Performance-Based Decisioning",
+        "Termination / Layoff Risk Scoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Algorithmic selection/ranking tools of this kind have documented disparate-impact risk under EEOC's Title VII guidance and peer-reviewed audits of resume-screening bias.",
+    "source_ids": [
+      "EEOC-AI-ADVERSE-IMPACT-GUIDANCE",
+      "ARXIV-GPT-RESUME-DISABILITY-BIAS"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HBF-02",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "affects_vulnerable": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Use case is flagged as affecting a protected candidate group, directly implicating Title VII disparate-impact exposure.",
+    "source_ids": [
+      "EEOC-AI-ADVERSE-IMPACT-GUIDANCE"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HBF-03",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "jurisdictions": [
+        "United States - New York City"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "NYC Local Law 144 specifically mandates an independent annual bias audit for any Automated Employment Decision Tool used on NYC candidates.",
+    "source_ids": [
+      "NYC-LL144"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HBF-04",
+    "dimension": "Bias/Fairness",
+    "condition": {},
+    "keyword_any": [
+      "disparate impact",
+      "adverse impact",
+      "four-fifths",
+      "80% rule"
+    ],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Description language directly matches the adverse-impact framework EEOC guidance uses to evaluate algorithmic selection tools.",
+    "source_ids": [
+      "EEOC-AI-ADVERSE-IMPACT-GUIDANCE"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HBF-05",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -10,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Ongoing outcome monitoring supports the continuous-audit posture NYC LL144's annual bias-audit regime is built around.",
+    "source_ids": [
+      "NYC-LL144"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HHO-01",
+    "dimension": "Human Oversight",
+    "condition": {
+      "autonomy": [
+        "Fully autonomous - no human review"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "A fully autonomous employment decision with no human review removes the accountable human EEOC guidance and the EU AI Act both expect for consequential employment decisions.",
+    "source_ids": [
+      "EEOC-AI-ADVERSE-IMPACT-GUIDANCE",
+      "EU-AI-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HHO-02",
+    "dimension": "Human Oversight",
+    "condition": {
+      "function": [
+        "Termination / Layoff Risk Scoring",
+        "Promotion / Performance-Based Decisioning"
+      ],
+      "autonomy": [
+        "Fully autonomous - no human review",
+        "Human-in-the-loop (advisory, human must act)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Termination and promotion are classified as high-risk employment decisions under the EU AI Act's Annex III employment category, warranting a clearly accountable human decision-maker.",
+    "source_ids": [
+      "EU-AI-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HEXP-01",
+    "dimension": "Explainability",
+    "condition": {
+      "explainability_method": [
+        "None available"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "No explainability method conflicts with the transparency expectations of the NIST AI RMF Measure function, and leaves a rejected candidate with no basis to understand or contest the decision.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HEXP-02",
+    "dimension": "Explainability",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Generative AI screening/scoring outputs are harder to trace to a specific evidentiary basis, a risk NIST's Generative AI Profile calls out explicitly.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HSEC-01",
+    "dimension": "Security",
+    "condition": {
+      "data_types": [
+        "Biometric Data (facial/voice analysis)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Biometric candidate data requires the stronger technical safeguards an AI management system under ISO/IEC 42001 is expected to specify.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HSEC-02",
+    "dimension": "Security",
+    "condition": {
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Vendor-supplied hiring algorithms require documented oversight of the vendor's own security and audit practices, not just the employer's.",
+    "source_ids": [
+      "ISO-42001",
+      "HIREVUE-BIAS-AUDIT-PR"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HDI-01",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Termination / Layoff Risk Scoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "Termination/layoff decisions are the most consequential employment outcome and fall within the EU AI Act's Annex III high-risk employment category.",
+    "source_ids": [
+      "EU-AI-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HDI-02",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Promotion / Performance-Based Decisioning"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Promotion decisions directly affect a worker's career and compensation trajectory and are explicitly named as high-risk employment AI under the EU AI Act.",
+    "source_ids": [
+      "EU-AI-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HDI-03",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Resume Screening / Candidate Ranking",
+        "Video Interview Analysis",
+        "Skills Assessment / Testing"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Screening and ranking tools directly gate who advances in a hiring process, a high-risk employment function under the EU AI Act.",
+    "source_ids": [
+      "EU-AI-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HDI-04",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Interview Scheduling (Administrative)",
+        "Candidate Sourcing / Outreach"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 5,
+    "risk_level_if_matched": "Low",
+    "rationale": "Scheduling and outreach functions have limited direct effect on a candidate's actual selection outcome.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HRE-01",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "United States - New York City"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "NYC Local Law 144 directly prohibits using an undisclosed, unaudited AEDT on NYC candidates, with penalties up to $1,500/day and active 2026 enforcement sweeps.",
+    "source_ids": [
+      "NYC-LL144"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HRE-02",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "United States - Illinois"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Illinois's AI Video Interview Act (as expanded by HB 3773, effective Jan 2026) imposes notice, consent, and non-discrimination duties on AI-driven employment tools used on Illinois candidates.",
+    "source_ids": [
+      "IL-AI-VIDEO-INTERVIEW-ACT"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HRE-03",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "European Union"
+      ],
+      "function": [
+        "Resume Screening / Candidate Ranking",
+        "Video Interview Analysis",
+        "Skills Assessment / Testing",
+        "Promotion / Performance-Based Decisioning",
+        "Termination / Layoff Risk Scoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "EU-deployed employment AI of this kind falls under EU AI Act Annex III as high-risk; obligations apply per the 2026 Digital Omnibus timeline.",
+    "source_ids": [
+      "EU-AI-ACT",
+      "EU-AI-ACT-OMNIBUS-2026"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HRE-04",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "is_samd": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "A tool the employer has already classified as a legally regulated Automated Employment Decision Tool carries mandatory audit and disclosure duties.",
+    "source_ids": [
+      "NYC-LL144",
+      "EEOC-AI-ADVERSE-IMPACT-GUIDANCE"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMR-01",
+    "dimension": "Model Risk",
+    "condition": {
+      "model_type": [
+        "Deep Learning (black-box)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Black-box models are harder to validate and audit under an AI management system.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMR-02",
+    "dimension": "Model Risk",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Generative AI/LLM components carry elevated, still-emerging model risk per NIST's dedicated Generative AI Profile, and documented disability-bias failure modes in resume screening specifically.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE",
+      "ARXIV-GPT-RESUME-DISABILITY-BIAS"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMR-03",
+    "dimension": "Model Risk",
+    "condition": {
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Vendor claims of a clean bias audit have been publicly disputed on methodology grounds, so vendor-supplied hiring models need independent verification, not just the vendor's own reporting.",
+    "source_ids": [
+      "HIREVUE-BIAS-AUDIT-PR"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMR-04",
+    "dimension": "Model Risk",
+    "condition": {},
+    "keyword_any": [],
+    "risk_weight": 5,
+    "risk_level_if_matched": "Low",
+    "rationale": "Every deployed AI system carries a baseline governance expectation under the OECD AI Principles regardless of its specific risk profile.",
+    "source_ids": [
+      "OECD-AI-PRINCIPLES"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMON-01",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "No post-deployment monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "High",
+    "rationale": "With no post-deployment monitoring, a hiring tool cannot demonstrate the annual bias-audit-equivalent evidence NYC LL144 requires.",
+    "source_ids": [
+      "NYC-LL144"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMON-02",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "Periodic manual audit"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Periodic manual audit can satisfy an annual bias-audit cadence but leaves gaps between review cycles.",
+    "source_ids": [
+      "NYC-LL144"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "HMON-03",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -20,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous automated monitoring is the strongest control state under ISO/IEC 42001 and exceeds NYC LL144's minimum annual-audit bar.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "HR / Recruitment & Hiring"
+  },
+  {
+    "id": "GDP-01",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "Sensitive/Special-Category Data (health, biometric, genetic, etc.)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Sensitive/special-category data receives heightened protection under virtually every AI governance framework, regardless of sector.",
+    "source_ids": [
+      "NIST-AI-RMF",
+      "UNESCO-AI-ETHICS-2021"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GDP-02",
+    "dimension": "Data Privacy",
+    "condition": {
+      "data_types": [
+        "Financial Data"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Financial data carries elevated privacy and fraud-risk exposure under general data-governance expectations.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GDP-03",
+    "dimension": "Data Privacy",
+    "condition": {},
+    "keyword_any": [
+      "de-identified",
+      "synthetic data only",
+      "anonymized"
+    ],
+    "risk_weight": -10,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Data-minimization practice reduces privacy exposure per the NIST AI RMF data-governance expectations.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GBF-01",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "affects_vulnerable": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "The system is flagged as affecting a vulnerable or protected population, directly implicating the fairness/non-discrimination expectations common to every major AI governance framework.",
+    "source_ids": [
+      "CO-AI-ACT",
+      "UNESCO-AI-ETHICS-2021"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GBF-02",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "function": [
+        "Automated Decision-Making (Consequential)",
+        "Prediction / Risk Scoring",
+        "Classification / Categorization"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Consequential decision, prediction, and classification functions are exactly the pattern Colorado's AI Act targets for mandatory algorithmic-discrimination duties, regardless of sector.",
+    "source_ids": [
+      "CO-AI-ACT"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GBF-03",
+    "dimension": "Bias/Fairness",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -10,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous outcome monitoring supports early detection of disparate-impact drift, an ISO/IEC 42001 AI management system expectation.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GHO-01",
+    "dimension": "Human Oversight",
+    "condition": {
+      "autonomy": [
+        "Fully autonomous - no human review"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "Fully autonomous operation with no human review conflicts with the human-oversight principle common to the OECD AI Principles and the UNESCO Recommendation, which apply regardless of industry.",
+    "source_ids": [
+      "OECD-AI-PRINCIPLES",
+      "UNESCO-AI-ETHICS-2021"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GHO-02",
+    "dimension": "Human Oversight",
+    "condition": {
+      "is_samd": [
+        true
+      ],
+      "autonomy": [
+        "Fully autonomous - no human review",
+        "Human-in-the-loop (advisory, human must act)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "A system already identified as driving a legally consequential decision needs a clearly accountable human decision-maker under Colorado's AI Act framework.",
+    "source_ids": [
+      "CO-AI-ACT"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GEXP-01",
+    "dimension": "Explainability",
+    "condition": {
+      "explainability_method": [
+        "None available"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "No explainability method conflicts with the transparency principle shared by the NIST AI RMF and the UNESCO Recommendation.",
+    "source_ids": [
+      "NIST-AI-RMF",
+      "UNESCO-AI-ETHICS-2021"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GEXP-02",
+    "dimension": "Explainability",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Generative AI outputs are harder to trace to a specific evidentiary basis, a risk NIST's Generative AI Profile calls out explicitly.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GSEC-01",
+    "dimension": "Security",
+    "condition": {
+      "data_types": [
+        "Sensitive/Special-Category Data (health, biometric, genetic, etc.)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Sensitive data requires the stronger technical safeguards an ISO/IEC 42001 AI management system is expected to specify.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GSEC-02",
+    "dimension": "Security",
+    "condition": {
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Third-party/vendor components introduce supply-chain risk requiring documented oversight regardless of sector.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GDI-01",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Automated Decision-Making (Consequential)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "A consequential automated decision is precisely the trigger Colorado's AI Act and the EU AI Act use to define high-risk AI, independent of industry.",
+    "source_ids": [
+      "CO-AI-ACT",
+      "EU-AI-ACT"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GDI-02",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Prediction / Risk Scoring",
+        "Classification / Categorization",
+        "Recommendation / Ranking"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Prediction, classification, and ranking functions materially shape downstream outcomes for the individuals scored.",
+    "source_ids": [
+      "CO-AI-ACT"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GDI-03",
+    "dimension": "Decision Impact",
+    "condition": {
+      "function": [
+        "Process Automation (Non-consequential)",
+        "Research / Analytics"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 5,
+    "risk_level_if_matched": "Low",
+    "rationale": "Non-consequential process automation and research/analytics functions have limited direct effect on an individual's outcomes.",
+    "source_ids": [
+      "NIST-AI-RMF"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GRE-01",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "European Union"
+      ],
+      "function": [
+        "Automated Decision-Making (Consequential)",
+        "Prediction / Risk Scoring",
+        "Classification / Categorization"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "Critical",
+    "rationale": "An EU-deployed consequential AI system of this kind is likely to fall under the EU AI Act's high-risk provisions; the exact Annex III category depends on sector-specific curation not yet built for this industry.",
+    "source_ids": [
+      "EU-AI-ACT",
+      "EU-AI-ACT-OMNIBUS-2026"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GRE-02",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "is_samd": [
+        true
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 25,
+    "risk_level_if_matched": "High",
+    "rationale": "Colorado's AI Act applies its consumer-protection duties to high-risk AI making consequential decisions across housing, employment, education, financial services, healthcare, government services, insurance, and legal services — i.e. broadly, not just one named sector.",
+    "source_ids": [
+      "CO-AI-ACT"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GRE-03",
+    "dimension": "Regulatory Exposure",
+    "condition": {
+      "jurisdictions": [
+        "United States - Colorado"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Colorado's AI Act applies directly whenever the deployment jurisdiction includes Colorado, regardless of industry.",
+    "source_ids": [
+      "CO-AI-ACT"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GRE-04",
+    "dimension": "Regulatory Exposure",
+    "condition": {},
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Low",
+    "rationale": "Every AI system operating today carries a baseline governance expectation under the OECD AI Principles and the UNESCO Recommendation, regardless of the specific sector it's deployed in.",
+    "source_ids": [
+      "OECD-AI-PRINCIPLES",
+      "UNESCO-AI-ETHICS-2021"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMR-01",
+    "dimension": "Model Risk",
+    "condition": {
+      "model_type": [
+        "Deep Learning (black-box)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Black-box models are harder to validate and audit under an AI management system.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMR-02",
+    "dimension": "Model Risk",
+    "condition": {
+      "model_type": [
+        "Generative AI / LLM"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Generative AI/LLM components carry elevated, still-emerging model risk per NIST's dedicated Generative AI Profile.",
+    "source_ids": [
+      "NIST-GENAI-PROFILE"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMR-03",
+    "dimension": "Model Risk",
+    "condition": {
+      "third_party": [
+        "Licensed third-party/vendor product",
+        "Hybrid (vendor model, in-house integration)"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 15,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Third-party models require documented oversight of vendor-supplied model behavior and update cadence.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMR-04",
+    "dimension": "Model Risk",
+    "condition": {},
+    "keyword_any": [],
+    "risk_weight": 5,
+    "risk_level_if_matched": "Low",
+    "rationale": "Every deployed AI system carries a baseline governance expectation under the OECD AI Principles regardless of its specific risk profile.",
+    "source_ids": [
+      "OECD-AI-PRINCIPLES"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMON-01",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "No post-deployment monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 30,
+    "risk_level_if_matched": "High",
+    "rationale": "With no post-deployment monitoring, performance and fairness drift would go undetected, contrary to ISO/IEC 42001's continual-improvement requirement.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMON-02",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "Periodic manual audit"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Medium",
+    "rationale": "Periodic manual audit is better than none but leaves gaps between review cycles.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GMON-03",
+    "dimension": "Monitoring",
+    "condition": {
+      "monitoring": [
+        "Continuous automated monitoring"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": -20,
+    "risk_level_if_matched": "Mitigant",
+    "rationale": "Continuous automated monitoring is the strongest control state under ISO/IEC 42001.",
+    "source_ids": [
+      "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  }
+]
