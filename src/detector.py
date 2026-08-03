@@ -255,27 +255,26 @@ def detect(description):
 
 
 def summarize(detected):
-    """Turns the raw detect() dict into the short, presentation-ready lines
-    the 'Detected Information' panel shows."""
+    """Turns the raw detect() dict into the short, plain-English lines the
+    'What we understood' panel shows — five essentials, not all twelve raw
+    fields, and in everyday words rather than the form's own option text."""
+    from src.plain_language import AUTONOMY_PLAIN, FUNCTION_PLAIN, MONITORING_PLAIN
+
     industry_value, industry_conf = detected["industry"]
     lines = []
 
     lines.append(("Industry", industry_value or "Not detected — please pick one below", industry_conf))
-    lines.append(("Function", detected["function"][0], detected["function"][1]))
+
+    function_value, function_conf = detected["function"]
+    lines.append(("What it does", FUNCTION_PLAIN.get(function_value, function_value), function_conf))
 
     dtypes, dtypes_conf = detected["data_types"]
-    lines.append(("Data types", ", ".join(dtypes) if dtypes else "Not detected — please select at least one", dtypes_conf))
+    lines.append(("Data it uses", ", ".join(dtypes) if dtypes else "Not detected — please select at least one", dtypes_conf))
 
-    lines.append(("Model type", detected["model_type"][0], detected["model_type"][1]))
-    lines.append(("Decision autonomy", detected["autonomy"][0], detected["autonomy"][1]))
-
-    juris, juris_conf = detected["jurisdictions"]
-    lines.append(("Jurisdiction(s)", ", ".join(juris), juris_conf))
+    autonomy_value, autonomy_conf = detected["autonomy"]
+    lines.append(("Who's in control", AUTONOMY_PLAIN.get(autonomy_value, autonomy_value), autonomy_conf))
 
     monitoring_value, monitoring_conf = detected["monitoring"]
-    lines.append(("Monitoring", monitoring_value, monitoring_conf))
-
-    explainability_value, explainability_conf = detected["explainability_method"]
-    lines.append(("Explainability", explainability_value, explainability_conf))
+    lines.append(("Ongoing checks", MONITORING_PLAIN.get(monitoring_value, monitoring_value), monitoring_conf))
 
     return lines

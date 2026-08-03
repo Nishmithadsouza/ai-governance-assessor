@@ -10,7 +10,10 @@ from src.options import (
     PRESET_INDUSTRIES, THIRD_PARTY_OPTIONS, get_industry_config, is_curated,
     resolve_rule_profile,
 )
-from src.render import render_dimension_breakdown, render_overall_summary, source_lookup
+from src.render import (
+    render_dimension_breakdown, render_overall_summary, render_simple_dimension_grid,
+    render_simple_summary, source_lookup,
+)
 from src.scoring_engine import load_criteria_from_db
 from src.theme import hero, inject_css
 
@@ -76,10 +79,12 @@ has_unresolved = False
 if "detected" in st.session_state:
     lines = summarize(st.session_state["detected"])
     has_unresolved = any(conf == "unresolved" for _, _, conf in lines)
-    st.markdown("**Detected Information** — ✅ confidently detected · 🟡 assumed default · ❓ needs your input")
+    st.markdown("**What we understood:**")
     for label, value, conf in lines:
         st.markdown(f"{ICON[conf]} **{label}:** {value}")
-    st.caption("Nothing here is final — expand \"Review & edit details\" below to change anything before running.")
+    st.caption(
+        "🟡 = our best guess, ❓ = please tell us. Nothing is final — you can change any of it below."
+    )
 
 st.divider()
 
@@ -121,24 +126,25 @@ if (st.session_state.get("_cfg_industry") or None) != (industry or None):
 cfg = get_industry_config(industry) if industry else GENERIC_CONFIG
 
 if industry and is_curated(industry):
-    st.success(f"✅ **Curated tier** — showing the dedicated intake questions and rule set built specifically for **{industry}**.")
+    st.caption(f"✅ Using our in-depth question set for **{industry}**.")
 elif industry:
-    st.info(
-        f"🌐 **Generic cross-industry baseline** — no dedicated corpus exists yet for **{industry}**, so the assessment is "
-        "constructed from universal, real, cited governance sources (NIST AI RMF, ISO/IEC 42001, OECD AI Principles, the "
-        "UNESCO AI Ethics Recommendation, the EU AI Act, and Colorado's AI Act) that apply across sectors. Scoring is still "
-        "fully deterministic and citation-backed — just less deep than a dedicated corpus would be."
-    )
+    st.caption(f"🌐 No specific question set for **{industry}** yet — using our general-purpose one instead.")
+    with st.popover("What does that mean?"):
+        st.write(
+            "Every industry still gets scored with real, cited sources (NIST AI RMF, ISO/IEC 42001, "
+            "the EU AI Act, and others that apply broadly) — it's just not as tailored as our "
+            "Healthcare or HR question sets."
+        )
 else:
     st.warning("Type an industry name above to continue.")
 
 with st.expander("✏️ Review & edit all details", expanded=(has_unresolved or "detected" not in st.session_state)):
     with st.form("intake_form"):
         st.subheader("📝 Use case")
-        name = st.text_input("Use case name*", placeholder="e.g. AI-Assisted Diabetic Retinopathy Screening")
-        function = st.selectbox("Primary function*", cfg["functions"], key="function_select")
+        name = st.text_input("Give it a short name*", placeholder="e.g. AI-Assisted Diabetic Retinopathy Screening")
+        function = st.selectbox("What does it do?*", cfg["functions"], key="function_select")
         description = st.text_area(
-            "Describe the use case*",
+            "Describe it in your own words*",
             placeholder="What does it do, who uses it, what data does it see, how autonomous is it...",
             height=120,
             key="description_input",
@@ -147,21 +153,21 @@ with st.expander("✏️ Review & edit all details", expanded=(has_unresolved or
         st.subheader("🗄️ Data & model")
         col1, col2 = st.columns(2)
         with col1:
-            data_types = st.multiselect("Data types processed*", cfg["data_types"], key="data_types_select")
-            model_type = st.selectbox("Model type*", MODEL_TYPES, key="model_type_select")
+            data_types = st.multiselect("What data does it use?*", cfg["data_types"], key="data_types_select")
+            model_type = st.selectbox("What kind of AI is it?*", MODEL_TYPES, key="model_type_select")
             is_samd = st.checkbox(cfg["regulated_flag_label"], key="is_samd_checkbox")
         with col2:
-            third_party = st.selectbox("Build ownership*", THIRD_PARTY_OPTIONS, key="third_party_select")
-            explainability_method = st.selectbox("Explainability method available*", EXPLAINABILITY_OPTIONS, key="explainability_select")
-            monitoring = st.selectbox("Post-deployment monitoring in place*", MONITORING_OPTIONS, key="monitoring_select")
+            third_party = st.selectbox("Who built it?*", THIRD_PARTY_OPTIONS, key="third_party_select")
+            explainability_method = st.selectbox("Can it explain its decisions?*", EXPLAINABILITY_OPTIONS, key="explainability_select")
+            monitoring = st.selectbox("Is it checked after launch?*", MONITORING_OPTIONS, key="monitoring_select")
 
         st.subheader("⚖️ Decision context")
         col3, col4 = st.columns(2)
         with col3:
-            autonomy = st.selectbox("Decision autonomy*", AUTONOMY_OPTIONS, key="autonomy_select")
-            jurisdictions = st.multiselect("Deployment jurisdiction(s)*", JURISDICTIONS, key="jurisdictions_select")
+            autonomy = st.selectbox("Who makes the final call?*", AUTONOMY_OPTIONS, key="autonomy_select")
+            jurisdictions = st.multiselect("Where is it used?*", JURISDICTIONS, key="jurisdictions_select")
         with col4:
-            affects_vulnerable = st.checkbox("Affects a vulnerable / historically underserved population", key="affects_vulnerable_checkbox")
+            affects_vulnerable = st.checkbox("Could it affect a vulnerable group?", key="affects_vulnerable_checkbox")
             vulnerable_groups = st.multiselect("Which group(s)?", cfg["vulnerable_groups"], key="vulnerable_groups_select")
 
         submitted = st.form_submit_button("🚀 Run Assessment", type="primary")
@@ -199,13 +205,19 @@ if "last_assessment" in st.session_state:
     use_case = st.session_state["last_use_case"]
     result = outcome["result"]
 
-    st.success(f"Assessment #{outcome['assessment_id']} saved for **{use_case['name']}** ({use_case['industry']}).")
-    render_overall_summary(result["overall_score"], result["overall_level"], result["critical_flags"])
+    st.success(f"Assessment #{outcome['assessment_id']} saved.")
+    render_simple_summary(use_case["name"], result["overall_score"], result["overall_level"], result["critical_flags"], result["dimensions"])
+    st.write("")
+    render_simple_dimension_grid(result["dimensions"])
 
-    st.subheader("📐 Dimension-by-dimension breakdown, with citations")
-    render_dimension_breakdown(result["dimensions"], source_lookup(conn))
+    show_technical = st.checkbox("🔬 Show the full technical breakdown (exact scores, matched rules, cited sources, narrative)")
+    if show_technical:
+        render_overall_summary(result["overall_score"], result["overall_level"], result["critical_flags"])
 
-    with st.expander("🔑 Which keywords in your description triggered a rule?"):
+        st.subheader("📐 Dimension-by-dimension breakdown, with citations")
+        render_dimension_breakdown(result["dimensions"], source_lookup(conn))
+
+        st.subheader("🔑 Which keywords in your description triggered a rule?")
         criteria = load_criteria_from_db(conn, resolve_rule_profile(use_case["industry"]))
         hits = matched_keywords(use_case["description"], criteria)
         if hits:
@@ -214,5 +226,5 @@ if "last_assessment" in st.session_state:
         else:
             st.caption("No free-text keyword rules fired — all matches for this use case came from the structured fields.")
 
-    st.subheader(f"🗣️ Narrative ({'Gemini-generated' if outcome['narrative_source'] == 'gemini' else 'template-generated, no LLM key configured'})")
-    st.markdown(outcome["narrative"])
+        st.subheader(f"🗣️ Narrative ({'Gemini-generated' if outcome['narrative_source'] == 'gemini' else 'template-generated, no LLM key configured'})")
+        st.markdown(outcome["narrative"])
