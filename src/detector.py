@@ -111,6 +111,11 @@ JURISDICTION_KEYWORDS = {
     "United States - Federal": ["united states", "u.s.", "usa", "america", "federal"],
 }
 
+FALLBACK_DATA_TYPE = {
+    "Healthcare & Life Sciences": "PHI/ePHI",
+    "HR / Recruitment & Hiring": "Resume/CV Data",
+}
+
 VULNERABLE_KEYWORDS = [
     "minorit", "race", "ethnic", "women", "female", "elderly", "senior citizen",
     "child", "minor", "disab", "low-income", "low income", "uninsured",
@@ -173,9 +178,17 @@ def detect(description):
         function_value, function_conf = cfg["functions"][0], ASSUMED
     out["function"] = (function_value, function_conf)
 
-    # --- Data types ---
+    # --- Data types --- always resolves to *something* (never blocks a
+    # non-technical user in a required multiselect with no clue what to
+    # pick): falls back to the most conservative assumption for the industry.
     matched_types = [dt for dt in cfg["data_types"] if dt in DATA_TYPE_KEYWORDS and _any_in(text, DATA_TYPE_KEYWORDS[dt])]
-    out["data_types"] = (matched_types, CONFIDENT if matched_types else UNRESOLVED)
+    if matched_types:
+        out["data_types"] = (matched_types, CONFIDENT)
+    else:
+        fallback = FALLBACK_DATA_TYPE.get(industry_value)
+        if not fallback:
+            fallback = "Personal/Identifying Data" if "Personal/Identifying Data" in cfg["data_types"] else cfg["data_types"][0]
+        out["data_types"] = ([fallback], ASSUMED)
 
     # --- Model type ---
     model_value, model_conf = None, None

@@ -23,122 +23,154 @@ inject_css()
 
 hero(
     "📋", "New Assessment",
-    "The live-test surface: enter any AI use case — including one you make up right now — "
-    "and the deterministic rule engine will score it dynamically. Nothing here is hard-coded per use case.",
+    "Describe an AI system in one sentence and get an instant risk check — no forms required "
+    "unless you want to fine-tune the details yourself.",
 )
 
+FALLBACK_INDUSTRY_NAME = "General / Unspecified Use Case"
+
+
+def _auto_name(description):
+    text = description.strip().rstrip(". ")
+    return (text[:60] + "…") if len(text) > 60 else text
+
+
+def _use_case_from_detection(description, detected, name=None):
+    industry_value = detected["industry"][0] or FALLBACK_INDUSTRY_NAME
+    return {
+        "name": name or _auto_name(description),
+        "industry": industry_value,
+        "function": detected["function"][0],
+        "data_types": detected["data_types"][0],
+        "autonomy": detected["autonomy"][0],
+        "affects_vulnerable": detected["affects_vulnerable"][0],
+        "vulnerable_groups": detected["vulnerable_groups"][0],
+        "jurisdictions": detected["jurisdictions"][0],
+        "model_type": detected["model_type"][0],
+        "is_samd": detected["is_samd"][0],
+        "third_party": detected["third_party"][0],
+        "monitoring": detected["monitoring"][0],
+        "explainability_method": detected["explainability_method"][0],
+        "description": description.strip(),
+    }
+
+
 # ---------------------------------------------------------------------------
-# Quick start: type one plain-English sentence, get every field below
-# pre-filled. This exists because most of the ~12 fields further down are
-# unfamiliar jargon to a first-time user (or a live evaluator) — asking them
-# to cold-fill a long form is a usability problem, not a rigor requirement.
-# Detection is plain keyword matching (src/detector.py) — no LLM, no risk
-# judgment — it only pre-picks the same structured values a person would
-# otherwise choose by hand, and every field stays fully editable afterward.
+# The default path: one sentence, one click, straight to a result. No jargon
+# form is ever required — detection (src/detector.py, plain keyword matching,
+# no LLM, no risk judgment) always resolves every field to *something*
+# sensible, so there's nothing left that can block submission.
 # ---------------------------------------------------------------------------
-st.subheader("⚡ Quick start")
-st.caption(
-    "Describe the AI system in one or two plain sentences and click Analyze — everything below "
-    "will be pre-filled so you can just review and run it. Skip this and fill the form manually if you prefer."
-)
+st.subheader("⚡ Describe it, get your result")
+st.caption("Type one or two plain sentences about what the AI system does — that's all that's required.")
 quick_text = st.text_area(
     "What does the AI system do?",
     placeholder="e.g. AI screens resumes and recommends candidates.",
     height=70,
     key="quick_description_input",
 )
-analyze_clicked = st.button("🔍 Analyze", type="primary")
 
-if analyze_clicked and quick_text.strip():
-    detected = detect(quick_text.strip())
-    st.session_state["detected"] = detected
+run_now_clicked = st.button("🚀 Get My Result Now", type="primary")
 
-    industry_value, _ = detected["industry"]
-    if industry_value:
-        st.session_state["industry_select"] = industry_value
+if run_now_clicked:
+    if not quick_text.strip():
+        st.warning("Please describe the AI system first.")
     else:
-        st.session_state["industry_select"] = OTHER_INDUSTRY_OPTION
-    st.session_state["_cfg_industry"] = industry_value  # keep the dependent-field guard in sync
-
-    st.session_state["description_input"] = quick_text.strip()
-    st.session_state["function_select"] = detected["function"][0]
-    st.session_state["data_types_select"] = detected["data_types"][0]
-    st.session_state["model_type_select"] = detected["model_type"][0]
-    st.session_state["autonomy_select"] = detected["autonomy"][0]
-    st.session_state["jurisdictions_select"] = detected["jurisdictions"][0]
-    st.session_state["third_party_select"] = detected["third_party"][0]
-    st.session_state["monitoring_select"] = detected["monitoring"][0]
-    st.session_state["explainability_select"] = detected["explainability_method"][0]
-    st.session_state["is_samd_checkbox"] = detected["is_samd"][0]
-    st.session_state["affects_vulnerable_checkbox"] = detected["affects_vulnerable"][0]
-    st.session_state["vulnerable_groups_select"] = detected["vulnerable_groups"][0]
-elif analyze_clicked:
-    st.warning("Type a sentence first, then click Analyze.")
-
-has_unresolved = False
-if "detected" in st.session_state:
-    lines = summarize(st.session_state["detected"])
-    has_unresolved = any(conf == "unresolved" for _, _, conf in lines)
-    st.markdown("**What we understood:**")
-    for label, value, conf in lines:
-        st.markdown(f"{ICON[conf]} **{label}:** {value}")
-    st.caption(
-        "🟡 = our best guess, ❓ = please tell us. Nothing is final — you can change any of it below."
-    )
+        detected = detect(quick_text.strip())
+        use_case = _use_case_from_detection(quick_text, detected)
+        with st.spinner("Checking it against real AI governance rules..."):
+            outcome = run_and_persist_assessment(conn, use_case)
+        st.session_state["last_assessment"] = outcome
+        st.session_state["last_use_case"] = use_case
 
 st.divider()
 
-# Outside the form so changing it immediately swaps which functions/data types/
-# groups appear below — proof the app constructs a different analysis per
-# industry rather than relying on one hard-coded framework. Three tiers:
-# curated (own corpus), preset (convenience name, generic baseline), and a
-# fully free-typed industry (also generic baseline) — the system never
-# refuses an industry it wasn't specifically pre-coded for.
-industry_choices = INDUSTRIES + PRESET_INDUSTRIES + [OTHER_INDUSTRY_OPTION]
+# ---------------------------------------------------------------------------
+# Everything below is entirely optional — for anyone (an evaluator, a power
+# user) who wants to see or correct exactly what was detected before running,
+# rather than trusting the one-click defaults above.
+# ---------------------------------------------------------------------------
+customize = st.toggle("✏️ Want to review or change the details first?")
 
+if customize:
+    if st.button("🔄 Prefill the fields below from my description"):
+        if not quick_text.strip():
+            st.warning("Type a description in the box above first.")
+        else:
+            detected = detect(quick_text.strip())
+            st.session_state["detected"] = detected
 
-def _format_industry(i):
-    if i == OTHER_INDUSTRY_OPTION:
-        return f"✍️ {i}"
-    return f"{get_industry_config(i)['icon']} {i}"
+            industry_value, _ = detected["industry"]
+            st.session_state["industry_select"] = industry_value or OTHER_INDUSTRY_OPTION
+            st.session_state["_cfg_industry"] = industry_value
 
+            st.session_state["description_input"] = quick_text.strip()
+            st.session_state["function_select"] = detected["function"][0]
+            st.session_state["data_types_select"] = detected["data_types"][0]
+            st.session_state["model_type_select"] = detected["model_type"][0]
+            st.session_state["autonomy_select"] = detected["autonomy"][0]
+            st.session_state["jurisdictions_select"] = detected["jurisdictions"][0]
+            st.session_state["third_party_select"] = detected["third_party"][0]
+            st.session_state["monitoring_select"] = detected["monitoring"][0]
+            st.session_state["explainability_select"] = detected["explainability_method"][0]
+            st.session_state["is_samd_checkbox"] = detected["is_samd"][0]
+            st.session_state["affects_vulnerable_checkbox"] = detected["affects_vulnerable"][0]
+            st.session_state["vulnerable_groups_select"] = detected["vulnerable_groups"][0]
 
-selected = st.selectbox("Industry", industry_choices, format_func=_format_industry, key="industry_select")
+    has_unresolved = False
+    if "detected" in st.session_state:
+        lines = summarize(st.session_state["detected"])
+        has_unresolved = any(conf == "unresolved" for _, _, conf in lines)
+        st.markdown("**What we understood:**")
+        for label, value, conf in lines:
+            st.markdown(f"{ICON[conf]} **{label}:** {value}")
+        st.caption("🟡 = our best guess, ❓ = please tell us. Change anything below before running.")
 
-if selected == OTHER_INDUSTRY_OPTION:
-    industry = st.text_input(
-        "Type the industry",
-        placeholder="e.g. Agriculture / AgTech, Legal Services, Energy & Utilities...",
-        key="custom_industry",
-    ).strip()
-else:
-    industry = selected
+    # Outside the form so changing it immediately swaps which functions/data
+    # types/groups appear below — proof the app constructs a different
+    # analysis per industry rather than relying on one hard-coded framework.
+    industry_choices = INDUSTRIES + PRESET_INDUSTRIES + [OTHER_INDUSTRY_OPTION]
 
-# If the industry changed since the fields below were last populated (either
-# by a fresh Analyze or a manual switch), drop the industry-specific
-# selections rather than risk handing a multiselect a value that isn't in
-# its new option list.
-if (st.session_state.get("_cfg_industry") or None) != (industry or None):
-    for k in ("function_select", "data_types_select", "vulnerable_groups_select"):
-        st.session_state.pop(k, None)
-    st.session_state["_cfg_industry"] = industry
+    def _format_industry(i):
+        if i == OTHER_INDUSTRY_OPTION:
+            return f"✍️ {i}"
+        return f"{get_industry_config(i)['icon']} {i}"
 
-cfg = get_industry_config(industry) if industry else GENERIC_CONFIG
+    selected = st.selectbox("Industry", industry_choices, format_func=_format_industry, key="industry_select")
 
-if industry and is_curated(industry):
-    st.caption(f"✅ Using our in-depth question set for **{industry}**.")
-elif industry:
-    st.caption(f"🌐 No specific question set for **{industry}** yet — using our general-purpose one instead.")
-    with st.popover("What does that mean?"):
-        st.write(
-            "Every industry still gets scored with real, cited sources (NIST AI RMF, ISO/IEC 42001, "
-            "the EU AI Act, and others that apply broadly) — it's just not as tailored as our "
-            "Healthcare or HR question sets."
-        )
-else:
-    st.warning("Type an industry name above to continue.")
+    if selected == OTHER_INDUSTRY_OPTION:
+        industry = st.text_input(
+            "Type the industry",
+            placeholder="e.g. Agriculture / AgTech, Legal Services, Energy & Utilities...",
+            key="custom_industry",
+        ).strip()
+    else:
+        industry = selected
 
-with st.expander("✏️ Review & edit all details", expanded=(has_unresolved or "detected" not in st.session_state)):
+    # If the industry changed since the fields below were last populated
+    # (either by a fresh prefill or a manual switch), drop the
+    # industry-specific selections rather than risk handing a multiselect a
+    # value that isn't in its new option list.
+    if (st.session_state.get("_cfg_industry") or None) != (industry or None):
+        for k in ("function_select", "data_types_select", "vulnerable_groups_select"):
+            st.session_state.pop(k, None)
+        st.session_state["_cfg_industry"] = industry
+
+    cfg = get_industry_config(industry) if industry else GENERIC_CONFIG
+
+    if industry and is_curated(industry):
+        st.caption(f"✅ Using our in-depth question set for **{industry}**.")
+    elif industry:
+        st.caption(f"🌐 No specific question set for **{industry}** yet — using our general-purpose one instead.")
+        with st.popover("What does that mean?"):
+            st.write(
+                "Every industry still gets scored with real, cited sources (NIST AI RMF, ISO/IEC 42001, "
+                "the EU AI Act, and others that apply broadly) — it's just not as tailored as our "
+                "Healthcare or HR question sets."
+            )
+    else:
+        st.warning("Type an industry name above to continue.")
+
     with st.form("intake_form"):
         st.subheader("📝 Use case")
         name = st.text_input("Give it a short name*", placeholder="e.g. AI-Assisted Diabetic Retinopathy Screening")
@@ -172,32 +204,32 @@ with st.expander("✏️ Review & edit all details", expanded=(has_unresolved or
 
         submitted = st.form_submit_button("🚀 Run Assessment", type="primary")
 
-if submitted:
-    if not industry:
-        st.error("Please type an industry name (you selected \"Other\").")
-    elif not name.strip() or not description.strip() or not data_types or not jurisdictions:
-        st.error("Please fill in the use case name, description, at least one data type, and at least one jurisdiction.")
-    else:
-        use_case = {
-            "name": name.strip(),
-            "industry": industry,
-            "function": function,
-            "data_types": data_types,
-            "autonomy": autonomy,
-            "affects_vulnerable": affects_vulnerable,
-            "vulnerable_groups": vulnerable_groups if affects_vulnerable else [],
-            "jurisdictions": jurisdictions,
-            "model_type": model_type,
-            "is_samd": is_samd,
-            "third_party": third_party,
-            "monitoring": monitoring,
-            "explainability_method": explainability_method,
-            "description": description.strip(),
-        }
-        with st.spinner("Running the rule engine and generating the narrative..."):
-            outcome = run_and_persist_assessment(conn, use_case)
-        st.session_state["last_assessment"] = outcome
-        st.session_state["last_use_case"] = use_case
+    if submitted:
+        if not industry:
+            st.error("Please type an industry name (you selected \"Other\").")
+        elif not name.strip() or not description.strip() or not data_types or not jurisdictions:
+            st.error("Please fill in the use case name, description, at least one data type, and at least one jurisdiction.")
+        else:
+            use_case = {
+                "name": name.strip(),
+                "industry": industry,
+                "function": function,
+                "data_types": data_types,
+                "autonomy": autonomy,
+                "affects_vulnerable": affects_vulnerable,
+                "vulnerable_groups": vulnerable_groups if affects_vulnerable else [],
+                "jurisdictions": jurisdictions,
+                "model_type": model_type,
+                "is_samd": is_samd,
+                "third_party": third_party,
+                "monitoring": monitoring,
+                "explainability_method": explainability_method,
+                "description": description.strip(),
+            }
+            with st.spinner("Running the rule engine and generating the narrative..."):
+                outcome = run_and_persist_assessment(conn, use_case)
+            st.session_state["last_assessment"] = outcome
+            st.session_state["last_use_case"] = use_case
 
 if "last_assessment" in st.session_state:
     st.divider()
