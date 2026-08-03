@@ -5,7 +5,7 @@ reconstructed from the database), so both show identical output."""
 import plotly.graph_objects as go
 import streamlit as st
 
-from src.options import LEVEL_COLORS, level_badge
+from src.options import LEVEL_COLORS, SOURCE_TYPE_COLORS, level_badge
 from src.scoring_engine import DIMENSIONS
 
 
@@ -79,6 +79,11 @@ def render_dimension_breakdown(dimensions, sources_by_id):
                 for sid in m["source_ids"]:
                     src = sources_by_id.get(sid)
                     if src:
-                        st.caption(f"↳ *{src['source_type']}*: [{src['title']}]({src['url']}) — {src['publisher']} ({src['published_date']})")
+                        color = SOURCE_TYPE_COLORS.get(src["source_type"], "#898781")
+                        st.markdown(
+                            f'↳ <span class="gov-badge" style="background:{color};">{src["source_type"]}</span> '
+                            f'[{src["title"]}]({src["url"]}) — {src["publisher"]} ({src["published_date"]})',
+                            unsafe_allow_html=True,
+                        )
                     else:
                         st.caption(f"↳ source `{sid}` (not found in corpus)")

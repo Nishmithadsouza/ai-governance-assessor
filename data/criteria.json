@@ -1454,7 +1454,9 @@
     "rationale": "The system is flagged as affecting a vulnerable or protected population, directly implicating the fairness/non-discrimination expectations common to every major AI governance framework.",
     "source_ids": [
       "CO-AI-ACT",
-      "UNESCO-AI-ETHICS-2021"
+      "UNESCO-AI-ETHICS-2021",
+      "IEEE-FAIRNESS-LAW-2024",
+      "ACM-MEHRABI-BIAS-SURVEY-2021"
     ],
     "industry": "Generic / Cross-Industry Baseline"
   },
@@ -1777,7 +1779,8 @@
     "risk_level_if_matched": "Medium",
     "rationale": "Third-party models require documented oversight of vendor-supplied model behavior and update cadence.",
     "source_ids": [
-      "ISO-42001"
+      "ISO-42001",
+      "GOOGLE-RESPONSIBLE-AI"
     ],
     "industry": "Generic / Cross-Industry Baseline"
   },
@@ -1842,6 +1845,40 @@
     "rationale": "Continuous automated monitoring is the strongest control state under ISO/IEC 42001.",
     "source_ids": [
       "ISO-42001"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GDP-04",
+    "dimension": "Data Privacy",
+    "condition": {
+      "jurisdictions": [
+        "European Union"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 20,
+    "risk_level_if_matched": "High",
+    "rationale": "Any personal data processed by an EU-deployed AI system is separately and fully subject to the GDPR, independent of and in addition to the EU AI Act.",
+    "source_ids": [
+      "GDPR"
+    ],
+    "industry": "Generic / Cross-Industry Baseline"
+  },
+  {
+    "id": "GHO-03",
+    "dimension": "Human Oversight",
+    "condition": {
+      "jurisdictions": [
+        "European Union"
+      ]
+    },
+    "keyword_any": [],
+    "risk_weight": 10,
+    "risk_level_if_matched": "Medium",
+    "rationale": "The European Commission's Ethics Guidelines for Trustworthy AI name human agency and oversight as one of seven mandatory-in-spirit requirements for any EU-deployed AI system, regardless of sector.",
+    "source_ids": [
+      "EC-AI-ETHICS-GUIDELINES-2019"
     ],
     "industry": "Generic / Cross-Industry Baseline"
   }

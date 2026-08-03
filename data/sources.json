@@ -146,7 +146,7 @@
     "id": "OECD-AI-PRINCIPLES",
     "title": "OECD AI Principles (2019, updated 2024)",
     "publisher": "Organisation for Economic Co-operation and Development (OECD)",
-    "source_type": "Industry Standard",
+    "source_type": "Regulatory Guidance",
     "url": "https://oecd.ai/en/ai-principles",
     "jurisdiction": "Global (47 adherent countries)",
     "published_date": "2024-05-01",
@@ -295,5 +295,60 @@
     "published_date": "2021-11-25",
     "retrieved_date": "2026-08-01",
     "summary": "The first global, intergovernmental standard on AI ethics, grounded in transparency, fairness, accountability, and human oversight, with concrete policy guidance across sectors. Used here as the universal, industry-agnostic baseline source since it explicitly applies 'across the full lifecycle of AI systems' regardless of sector."
+  },
+  {
+    "id": "GDPR",
+    "title": "Regulation (EU) 2016/679, General Data Protection Regulation (GDPR)",
+    "publisher": "European Parliament and Council of the European Union",
+    "source_type": "Law/Regulation",
+    "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+    "jurisdiction": "European Union",
+    "published_date": "2016-04-27",
+    "retrieved_date": "2026-08-01",
+    "summary": "Binding EU law governing the processing of personal data, in force since 25 May 2018. Applies to any AI system processing personal data of individuals in the EU regardless of sector, independent of the EU AI Act — the two regulations apply cumulatively, not as alternatives."
+  },
+  {
+    "id": "EC-AI-ETHICS-GUIDELINES-2019",
+    "title": "Ethics Guidelines for Trustworthy AI",
+    "publisher": "European Commission, High-Level Expert Group on Artificial Intelligence",
+    "source_type": "Regulatory Guidance",
+    "url": "https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai",
+    "jurisdiction": "European Union",
+    "published_date": "2019-04-08",
+    "retrieved_date": "2026-08-01",
+    "summary": "Non-binding European Commission guidance defining seven key requirements for trustworthy AI (human agency and oversight, technical robustness, privacy and data governance, transparency, diversity/non-discrimination/fairness, societal and environmental well-being, and accountability). Predates and informed the binding EU AI Act, but is itself guidance, not law."
+  },
+  {
+    "id": "IEEE-FAIRNESS-LAW-2024",
+    "title": "Fairness in AI: Challenges in Bridging the Gap Between Algorithms and Law",
+    "publisher": "IEEE (2024 IEEE 40th International Conference on Data Engineering Workshops, ICDEW)",
+    "source_type": "Research",
+    "url": "https://ieeexplore.ieee.org/document/10555090/",
+    "jurisdiction": "Global (EU/US comparative)",
+    "published_date": "2024-05-13",
+    "retrieved_date": "2026-08-01",
+    "summary": "Peer-reviewed IEEE conference paper examining algorithmic fairness definitions against EU and US anti-discrimination law, and proposing best practices for selecting fairness criteria in real-world systems. Research-tier evidence, not binding authority."
+  },
+  {
+    "id": "ACM-MEHRABI-BIAS-SURVEY-2021",
+    "title": "A Survey on Bias and Fairness in Machine Learning",
+    "publisher": "ACM Computing Surveys (Mehrabi, Morstatter, Saxena, Lerman & Galstyan)",
+    "source_type": "Research",
+    "url": "https://dl.acm.org/doi/10.1145/3457607",
+    "jurisdiction": "Global",
+    "published_date": "2021-07-13",
+    "retrieved_date": "2026-08-01",
+    "summary": "Widely cited peer-reviewed ACM survey cataloguing sources of bias and fairness-mitigation techniques across the machine learning lifecycle. Research-tier evidence for the Bias/Fairness and Model Risk dimensions, not binding authority."
+  },
+  {
+    "id": "GOOGLE-RESPONSIBLE-AI",
+    "title": "Google AI Principles & Responsible AI Practices",
+    "publisher": "Google (vendor)",
+    "source_type": "Vendor Information",
+    "url": "https://ai.google/responsibility/responsible-ai-practices/",
+    "jurisdiction": "N/A (vendor)",
+    "published_date": "2018-06-07",
+    "retrieved_date": "2026-08-01",
+    "summary": "Vendor publication describing Google's own AI principles and recommended practices (fairness, interpretability, privacy, safety). Useful context on a major model/vendor's stated commitments, but carries no independent regulatory or standards authority — classified as Vendor Information, like Microsoft's equivalent healthcare publication."
   }
 ]

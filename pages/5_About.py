@@ -109,14 +109,16 @@ Instead, this application separates the two concerns:
 The corpus explicitly tags every source with one of the required authority tiers, because they do
 not carry equal weight:
 
-- **Law/Regulation** — binding (e.g. HIPAA, the EU AI Act, the Colorado AI Act).
+- **Law/Regulation** — binding (e.g. HIPAA, the EU AI Act, the GDPR, the Colorado AI Act).
 - **Regulatory Guidance** — official but non-binding interpretation (e.g. FDA guidance documents,
-  HHS OCR guidance, WHO guidance).
+  HHS OCR guidance, WHO guidance, the OECD AI Principles, the European Commission's Ethics
+  Guidelines for Trustworthy AI).
 - **Industry Standard** — consensus frameworks, often certifiable (e.g. ISO/IEC 42001, NIST AI RMF).
 - **Research** — peer-reviewed or preprint findings used as evidence, not authority (e.g. the
-  Obermeyer et al. 2019 study on algorithmic racial bias in healthcare).
+  Obermeyer et al. 2019 study on algorithmic racial bias in healthcare, an IEEE conference paper on
+  fairness law, and an ACM Computing Surveys paper on bias in machine learning).
 - **Vendor Information** — a vendor's own claims about its product, useful context but never a
-  compliance obligation.
+  compliance obligation (e.g. Microsoft's and Google's own responsible-AI publications).
 - **General Web Content** — everything else (blogs, marketing explainers) — included deliberately
   so the app can show why this tier must never be mistaken for the law it's describing.
 

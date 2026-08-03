@@ -12,8 +12,8 @@ a brand new one). Choosing an industry on the New Assessment page swaps in that 
 intake questions, citation corpus, and rule set — not a relabeled copy of the same one (see
 "Advanced Capability: multiple industries" below). A rule engine matches the use case's
 structured attributes (function, data processed, autonomy, jurisdiction, model type, monitoring,
-explainability) and free-text description against ~102 governance criteria (across the two
-curated industries plus the generic cross-industry baseline), each citing one or more of ~27
+explainability) and free-text description against ~104 governance criteria (across the two
+curated industries plus the generic cross-industry baseline), each citing one or more of ~32
 real, dated public sources (laws, regulatory guidance, standards, research, vendor
 material, general web content). It produces a score and level (Low / Medium / High / Critical)
 for each of 9 dimensions, an overall verdict, and a narrative — all persisted to SQLite so
@@ -43,7 +43,7 @@ it changes what's actually being evaluated:
   offers 10 preset industry names (Financial Services, Insurance, Retail, Education, ...) plus an
   "Other (type your own industry)" option with a free-text box. None of these have a dedicated
   corpus, so `src/options.py:resolve_rule_profile()` routes them to a **Generic Cross-Industry
-  Baseline** rule set instead — 26 criteria citing sources that are genuinely sector-agnostic by
+  Baseline** rule set instead — 28 criteria citing sources that are genuinely sector-agnostic by
   design (NIST AI RMF, ISO/IEC 42001, the OECD AI Principles, the UNESCO Recommendation on the
   Ethics of AI, the EU AI Act's general high-risk criteria, and Colorado's AI Act, which by its
   own text spans housing/employment/education/financial services/healthcare/government/insurance/
@@ -98,13 +98,13 @@ flowchart TD
     U["Evaluator / User<br/>(browser)"] -->|"any use case,<br/>any industry, typed live"| UI["Streamlit UI<br/>app.py + pages/1..5"]
     UI --> SVC["assessment_service.py<br/>(orchestration)"]
     SVC --> ENGINE["scoring_engine.py<br/>deterministic rule engine"]
-    ENGINE -->|"reads"| CRITERIA[("criteria table<br/>~102 cited rules")]
+    ENGINE -->|"reads"| CRITERIA[("criteria table<br/>~104 cited rules")]
     SVC --> LLM["llm_explainer.py"]
     LLM -->|"key configured"| GEMINI["Google Gemini<br/>(free tier)"]
     LLM -->|"no key / call fails"| TEMPLATE["deterministic<br/>template narrative"]
     SVC -->|"persist"| DB[("SQLite / Turso<br/>sources · criteria · use_cases ·<br/>assessments · assessment_dimensions")]
     DB -->|"read back"| UI
-    CRITERIA -->|"cites"| SOURCES[("sources table<br/>~27 real, dated public sources")]
+    CRITERIA -->|"cites"| SOURCES[("sources table<br/>~32 real, dated public sources")]
 ```
 
 Read this left to right against the "Surprise Record" test's own framing — **Input** (U → UI) →
@@ -119,8 +119,8 @@ Assessment Detail for every case afterward, not just the one just run).
 
 | File | Responsibility |
 |---|---|
-| `data/sources.json` | The curated citation corpus — ~27 real sources, each tagged with one of the 6 required authority types, a URL, publisher, and dates. |
-| `data/criteria.json` | ~102 governance rules (47 Healthcare + 29 HR/Recruitment + 26 Generic Cross-Industry Baseline), each tagged with its owning `industry`. Each ties a condition over the intake fields (and/or keywords in free text) to a dimension, a weight, and citation(s). This *is* the governance logic — everything else just applies it. |
+| `data/sources.json` | The curated citation corpus — ~32 real sources, each tagged with one of the 6 required authority types, a URL, publisher, and dates. |
+| `data/criteria.json` | ~104 governance rules (47 Healthcare + 29 HR/Recruitment + 28 Generic Cross-Industry Baseline), each tagged with its owning `industry`. Each ties a condition over the intake fields (and/or keywords in free text) to a dimension, a weight, and citation(s). This *is* the governance logic — everything else just applies it. |
 | `data/seed_use_cases.json`, `data/seed_use_cases_hr.json` | 7 Healthcare + 4 HR/Recruitment realistic use cases spanning Low→Critical, loaded once on first run so the app isn't empty on first look. |
 | `src/options.py` | `INDUSTRY_CONFIG` — per-industry intake vocabulary (functions, data types, affected groups); this is what makes adding a new industry additive rather than a rewrite. |
 | `src/db.py` | Schema + connection. Picks local SQLite or Turso automatically based on configured secrets. |
