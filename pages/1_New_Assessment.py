@@ -15,7 +15,7 @@ from src.render import (
     render_simple_summary, source_lookup,
 )
 from src.scoring_engine import load_criteria_from_db
-from src.theme import hero, inject_css
+from src.theme import big_button, hero, inject_css
 
 st.set_page_config(page_title="New Assessment", page_icon="📋", layout="wide")
 conn, backend = init_app()
@@ -70,7 +70,7 @@ quick_text = st.text_area(
     key="quick_description_input",
 )
 
-run_now_clicked = st.button("🚀 Get My Result Now", type="primary")
+run_now_clicked = big_button("🚀 Get My Result Now", key="get_result")
 
 if run_now_clicked:
     if not quick_text.strip():

@@ -71,7 +71,7 @@ tier_specs = [
 for col, (label, color, desc) in zip(tier_cols, tier_specs):
     with col:
         st.markdown(
-            f"""<div class="gov-card accent-left" style="--gov-accent:{color};">
+            f"""<div class="gov-card accent-left hoverable" style="--gov-accent:{color};">
                     <div style="font-weight:700; font-size:1.05rem;">{label}</div>
                     <div style="color:#52514e; font-size:0.88rem;">{desc}</div>
                 </div>""",

@@ -43,6 +43,11 @@ def inject_css():
             padding: 0.9rem 1.1rem;
             color: #ffffff;
             height: 100%;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .gov-tile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(11,11,11,0.18);
         }
         .gov-tile .gov-tile-label {
             font-size: 0.8rem;
@@ -89,7 +94,8 @@ def inject_css():
         .gov-navcard .gov-navcard-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.3rem; }
         .gov-navcard .gov-navcard-desc { color: #52514e; font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-        .st-key-home_cta a[data-testid="stPageLink-NavLink"] {
+        div[class*="st-key-cta_"] a[data-testid="stPageLink-NavLink"],
+        div[class*="st-key-cta_"] button {
             background: linear-gradient(120deg, #2a78d6, #1baf7a) !important;
             color: #ffffff !important;
             border-radius: 12px !important;
@@ -99,13 +105,22 @@ def inject_css():
             font-size: 1.1rem !important;
             box-shadow: 0 6px 18px rgba(42,120,214,0.35);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
+            width: 100%;
         }
-        .st-key-home_cta a[data-testid="stPageLink-NavLink"]:hover {
+        div[class*="st-key-cta_"] a[data-testid="stPageLink-NavLink"]:hover,
+        div[class*="st-key-cta_"] button:hover {
             transform: translateY(-2px) scale(1.01);
             box-shadow: 0 10px 24px rgba(42,120,214,0.45);
         }
-        .st-key-home_cta a[data-testid="stPageLink-NavLink"] p { color: #ffffff !important; font-weight: 800 !important; }
-        .st-key-home_cta a[data-testid="stPageLink-NavLink"] span[data-testid="stIconEmoji"] { filter: brightness(10); }
+        div[class*="st-key-cta_"] a[data-testid="stPageLink-NavLink"] p,
+        div[class*="st-key-cta_"] button p,
+        div[class*="st-key-cta_"] button div { color: #ffffff !important; font-weight: 800 !important; }
+
+        /* Every expander gets a subtle interactive hover, app-wide. */
+        [data-testid="stExpander"] summary:hover {
+            background: rgba(42,120,214,0.06);
+            border-radius: 8px;
+        }
 
         .gov-chip {
             border-radius: 12px;
@@ -181,9 +196,16 @@ def nav_card(icon, title, description, page, color):
     st.page_link(page, label=f"Open {title}", icon="➡️")
 
 
-def big_cta(label, page, icon="🚀"):
-    with st.container(key="home_cta"):
+def big_cta(label, page, icon="🚀", key="home"):
+    with st.container(key=f"cta_{key}"):
         st.page_link(page, label=label, icon=icon)
+
+
+def big_button(label, key, **kwargs):
+    """A gradient-styled st.button (same look as big_cta, for actions rather
+    than navigation). Returns the button's clicked bool."""
+    with st.container(key=f"cta_{key}"):
+        return st.button(label, key=f"cta_{key}_btn", **kwargs)
 
 
 def dimension_showcase(dimensions_plain):
